@@ -10,7 +10,7 @@ document.getElementById('sinaimgbed_list').innerHTML+='<div class="sinaimgbed_pi
 function sinaimgbed_cpush(){
 if(!sinaimgbed_pool.length){alert('请先选择文件');return;}
 var ImageFileExtend = ".gif,.png,.jpg,.jpeg,.bmp";
-//判断后缀
+/*判断后缀*/
 for(var i=0;i<sinaimgbed_pool.length;i++){
 	var fileExtend=sinaimgbed_pool[i].name.substring(sinaimgbed_pool[i].name.lastIndexOf('.')).toLowerCase();
 	if(ImageFileExtend.indexOf(fileExtend)==-1){
