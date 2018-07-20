@@ -32,7 +32,7 @@ xhr.upload.onprogress=function(e){if(e.lengthComputable){document.getElementById
 xhr.onerror=function(e){alert('上传失败，执行中断');return;}
 xhr.onreadystatechange=function(e){if(xhr.readyState===4 && xhr.status===200){
 	sinaimgbed_pid[numb]=JSON.parse(xhr.responseText).data.pics.pic_1.pid;
-	document.getElementById('sinaimgbed_act'+numb).innerHTML='<a href="https://ws3.sinaimg.cn/large/'+sinaimgbed_pid[numb]+'" target="_blank">上传成功，右键复制图片链接</a>';
+	document.getElementById('sinaimgbed_act'+numb).innerHTML='<a href="https://ws3.sinaimg.cn/large/'+sinaimgbed_pid[numb]+'.jpg" target="_blank">上传成功，右键复制图片链接</a>';
 	document.getElementById('sinaimgbed_pic'+numb).setAttribute('style','background:url('+sinaimgbed_pid[numb]+') no-repeat center;background-size:cover;');
 	sinaimgbed_cpost(numb+1);
 }}

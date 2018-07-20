@@ -14,5 +14,5 @@ function tle_sinaimgbed_head(){
 	echo '<span onclick="tle_sinaimgbed_show(this);" class="show_advset">新浪图床</span>';
 }
 function tle_sinaimgbed_menu(){echo '<div class="sidebarsubmenu"><a href="./plugin.php?plugin=tle_sinaimgbed">新浪图床</a></div>';}
-addAction('adm_writelog_center', 'tle_sinaimgbed_head');
+addAction('adm_writelog_head', 'tle_sinaimgbed_head');
 addAction('adm_sidebar_ext', 'tle_sinaimgbed_menu');
