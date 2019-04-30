@@ -61,7 +61,11 @@ if($action=='updateWBTCLinks'){
 	preg_match_all( "/<(img|IMG).*?src=[\'|\"](?!".$blogurl.")(.*?)[\'|\"].*?[\/]?>/", $post_content, $localmatches );
 	
 	foreach($localmatches[2] as $url){
-		$uploadfile=time().basename($url).".jpg";
+		$basename=basename($url);
+		if(strpos($basename,"?")!== false){
+			$basename=explode("?",$basename)[0];
+		}
+		$uploadfile=time().$basename.".png";
 		$html = file_get_contents($url);
 		file_put_contents(dirname(__FILE__)."/../../../uploadfile/".$uploaddir.$uploadfile, $html);
 		$imgurl=BLOG_URL."content/uploadfile/".$uploaddir.$uploadfile;
