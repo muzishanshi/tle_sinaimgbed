@@ -16,8 +16,8 @@ $DB = MySql::getInstance();
 </div>
 <center id="preview"></center>
 <div id="remotepicwindow" style="display:none;">
-	<textarea class="form-control" name="alipicurls" rows="3" id="alipicurls" placeholder="请在下方输入远程图片地址~每行一个~"></textarea>
-	<button type="button" class="btn btn-primary" onclick="aliremoteupload();">上传</button>
+	<textarea class="form-control" name="alipicurls" rows="3" style="width:100%;" id="alipicurls" placeholder="请在下方输入远程图片地址~每行一个~"></textarea>
+	<p><button type="button" class="btn btn-primary" onclick="aliremoteupload();">上传</button></p>
 </div>
 <script type="text/javascript">
 	$("#aliremotepic").click(function(){
