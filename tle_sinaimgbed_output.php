@@ -18,7 +18,7 @@ var BLOG_URL="<?=BLOG_URL;?>";
 function tle_sinaimgbed_show(node){
 	var item=document.createElement("div");
 	item.setAttribute("id","tle_sinaimgbed_body");
-	item.innerHTML="<input type=\"file\" onchange=\"sinaimgbed_cpick()\" id=\"sinaimgbed_pick\"<?php if($tle_sinaimgbed_set["issavealbum"]=="n"){?> multiple=\"multiple\"<?php }?> accept=\"image/jpeg,image/png,image/gif\" /><input type=\"button\" onclick=\"sinaimgbed_cpush()\" id=\"sinaimgbed_push\" value=\"开始\" /><div id=\"sinaimgbed_list\"></div>";
+	item.innerHTML="<input type=\"file\" onchange=\"sinaimgbed_cpick()\" id=\"sinaimgbed_pick\"<?php if($tle_sinaimgbed_set["issavealbum"]=="n"){?> multiple=\"multiple\"<?php }?> accept=\"image/jpeg,image/png,image/gif\" /><p><input type=\"button\" onclick=\"sinaimgbed_cpush()\" id=\"sinaimgbed_push\" value=\"开始\" /></p><div id=\"sinaimgbed_list\"></div>";
 	if(document.getElementById("tle_sinaimgbed_body")){
 		node.parentNode.removeChild(document.getElementById("tle_sinaimgbed_body"));
 	}
@@ -101,7 +101,7 @@ function addToEditor(url){
 	}else if(typeof(UE)!='undefined'){
 		UE.getEditor('content').execCommand('insertHtml','<img src="'+url+'" />');
 	}else if(document.getElementById('contenteditormd')!=null&&typeof(document.getElementById('contenteditormd'))!='undefined'){
-		contenteditormd.cm.replaceSelection('![]('+url+')');
+		contenteditormd.cm.replaceSelection('\r\n![]('+url+')\r\n');
 	}else if(document.getElementById('contenttinymce')!=null&&typeof(document.getElementById('contenttinymce'))!='undefined'){
 		tinyMCE.execCommand('mceInsertContent',false,'<img src=\"'+url+'\" title="" border=\"0\" width="100%" />');
 	}else{

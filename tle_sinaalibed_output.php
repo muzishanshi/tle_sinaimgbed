@@ -13,6 +13,7 @@ $DB = MySql::getInstance();
 	<input id="alilocalpic" type="file" accept="image/*" multiple>
 	<button type="button" class="btn btn-danger btn-sm">选择本地图片上传阿里</button>
 	<button id="aliremotepic" type="button" class="btn btn-primary btn-sm">上传远程图片上传阿里</button>
+	<span id="uploadprogress"></span>
 </div>
 <center id="preview"></center>
 <div id="remotepicwindow" style="display:none;">
@@ -35,6 +36,7 @@ $DB = MySql::getInstance();
 		});
 	});
 	function alilocalupload(files){
+		document.getElementById('uploadprogress').innerHTML="上传中……";
 		$("#preview").html('');
 		if (files.length == 0) return alert('请选择图片文件！');
 		for(var j = 0,len = files.length; j < len; j++){
@@ -52,6 +54,7 @@ $DB = MySql::getInstance();
 				dataType: 'json',
 				// 图片上传成功
 				success: function (result) {
+					document.getElementById('uploadprogress').innerHTML="";
 					if (result.code == 1){
 						addToEditor('<p><img src="'+result.imgurl+'" src="" /></p>');
 						$("#preview").append('<p>'+result.imgurl+'</p>');
@@ -68,6 +71,7 @@ $DB = MySql::getInstance();
 		}
 	}
 	function aliremoteupload(){
+		document.getElementById('uploadprogress').innerHTML="上传中……";
 		$("#preview").html('');
 		var alipicurls = $('#alipicurls').val();
 		if (alipicurls == false) return alert('请输入图片链接！');
@@ -76,11 +80,11 @@ $DB = MySql::getInstance();
 		for(var j = 0,len = UrlArr.length; j < len; j++){
 			console.log(UrlArr[j]);
 			$.getJSON(url, {imgurl: UrlArr[j]}, function(result, textStatus) {
+				document.getElementById('uploadprogress').innerHTML="";
 				if (result.code == 1){
-					addToEditor('<p><img src="'+result.imgurl+'" src="" /></p>');
+					addToEditor(result.imgurl);
 					$("#preview").append('<p>'+result.imgurl+'</p>');
 				}else{
-					addToEditor('<p>第'+j+'个图片上传失败</p>');
 					$("#preview").append('<p>第'+j+'个图片上传失败</p>');
 				}
 				console.log(result);
