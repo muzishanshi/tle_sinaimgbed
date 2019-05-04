@@ -79,7 +79,7 @@ function sinaimgbed_cpost(numb){
 			var data=JSON.parse(xhr.responseText);
 			if(data.status=="ok"){
 				sinaimgbed_pid[numb]=data.url;
-				document.getElementById('sinaimgbed_act'+numb).innerHTML="<a href='"+sinaimgbed_pid[numb]+"' target=\"_blank\">上传成功，右键复制图片链接</a><br /><a href=\"javascript:addToEditor('<img src="+sinaimgbed_pid[numb]+" />');\">添加到编辑器</a>";
+				document.getElementById('sinaimgbed_act'+numb).innerHTML="<a href='"+sinaimgbed_pid[numb]+"' target=\"_blank\">上传成功，右键复制图片链接</a><br /><a href=\"javascript:addToEditor('"+sinaimgbed_pid[numb]+"');\">添加到编辑器</a>";
 				document.getElementById('sinaimgbed_pic'+numb).style.backgroundImage="url("+sinaimgbed_pid[numb]+")";
 				document.getElementById('sinaimgbed_pic'+numb).style.backgroundRepeat="no-repeat";
 				document.getElementById('sinaimgbed_pic'+numb).style.backgroundSize="cover";
@@ -95,30 +95,32 @@ function sinaimgbed_cpost(numb){
 	xhr.send(upqk);
 }
 var sinaimgbed_pool=[],sinaimgbed_pid=[];
-function addToEditor(html){
+function addToEditor(url){
 	if(typeof(KindEditor)!='undefined'){
-		KindEditor.insertHtml('#content',html);
+		KindEditor.insertHtml('#content','<img src="'+url+'" />');
 	}else if(typeof(UE)!='undefined'){
-		UE.getEditor('content').execCommand('insertHtml',html);
-	}else if(typeof(UM)!='undefined'){
-		UM.getEditor('content').execCommand('insertHtml',html);
+		UE.getEditor('content').execCommand('insertHtml','<img src="'+url+'" />');
+	}else if(document.getElementById('contenteditormd')!=null&&typeof(document.getElementById('contenteditormd'))!='undefined'){
+		contenteditormd.cm.replaceSelection('![]('+url+')');
+	}else if(document.getElementById('contenttinymce')!=null&&typeof(document.getElementById('contenttinymce'))!='undefined'){
+		tinyMCE.execCommand('mceInsertContent',false,'<img src=\"'+url+'\" title="" border=\"0\" width="100%" />');
 	}else{
 		var msg=document.getElementById('content');
 		if(document.selection){
 			this.focus();
 			var sel=document.selection.createRange();
-			sel.text=html;this.focus();
+			sel.text='<img src="'+url+'" />';this.focus();
 		}else if(msg.selectionStart||msg.selectionStart=='0'){
 			var startPos=msg.selectionStart;
 			var endPos=msg.selectionEnd;
 			var scrollTop=msg.scrollTop;
-			msg.value=msg.value.substring(0,startPos)+html+msg.value.substring(endPos, msg.value.length);
+			msg.value=msg.value.substring(0,startPos)+url+msg.value.substring(endPos, msg.value.length);
 			this.focus();
-			msg.selectionStart=startPos+html.length;
-			msg.selectionEnd=startPos+html.length;
+			msg.selectionStart=startPos+'<img src="'+url+'" />'.length;
+			msg.selectionEnd=startPos+'<img src="'+url+'" />'.length;
 			msg.scrollTop=scrollTop;
 		}else{
-			this.value+=html;
+			this.value+='<img src="'+url+'" />';
 			this.focus();
 		}
 	}
