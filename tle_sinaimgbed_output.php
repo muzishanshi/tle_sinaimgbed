@@ -100,6 +100,8 @@ function addToEditor(url){
 		KindEditor.insertHtml('#content','<img src="'+url+'" />');
 	}else if(typeof(UE)!='undefined'){
 		UE.getEditor('content').execCommand('insertHtml','<img src="'+url+'" />');
+	}else if(contentLayUIEditor!=null&&typeof(contentLayUIEditor)!='undefined'&&layedit!=null&&typeof(layedit)!='undefined'){
+		layedit.setContent(contentLayUIEditor,'<img src="'+url+'" />',false);
 	}else if(document.getElementById('contenteditormd')!=null&&typeof(document.getElementById('contenteditormd'))!='undefined'){
 		contenteditormd.cm.replaceSelection('\r\n![]('+url+')\r\n');
 	}else if(document.getElementById('contenttinymce')!=null&&typeof(document.getElementById('contenttinymce'))!='undefined'){
