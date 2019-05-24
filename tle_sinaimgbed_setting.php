@@ -36,11 +36,15 @@ function plugin_setting_view(){
 	$get_option = $DB -> once_fetch_array("SELECT * FROM `".DB_PREFIX."options` WHERE `option_name` = 'tle_sinaimgbed_option' ");
 	$tle_sinaimgbed_set=unserialize($get_option["option_value"]);
 	?>
-	<div>
-	<h3>版本检测</h3>
+	<div style="background-color:#fff;">
+	<fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+	  <legend>版本检测</legend>
+	</fieldset>
 	<div id="versionCode"></div>
-	<h3>图床设置</h3>
-	<form method="post">
+	<fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+	  <legend>图床设置</legend>
+	</fieldset>
+	<form class="layui-form" method="post">
 		<p>
 			是否保存相册：
 			<input type="radio" name="issavealbum" value="n" <?=isset($tle_sinaimgbed_set['issavealbum'])?($tle_sinaimgbed_set['issavealbum']=="n"?"checked":""):"checked";?> />否
@@ -48,13 +52,13 @@ function plugin_setting_view(){
 			（需开启并配置好<a href="http://www.emlog.net/plugin/310" target="_blank">新浪微博同步插件</a>）
 		</p>
 		<p>
-			微博小号账号：<input name="weibouser" value="<?php echo $tle_sinaimgbed_set['weibouser']; ?>" />
+			微博小号账号：<input style="margin:5px auto;" class="layui-input" name="weibouser" value="<?php echo $tle_sinaimgbed_set['weibouser']; ?>" />
 		</p>
 		<p>
-			微博小号密码：<input type="password" name="weibopass" value="<?php echo $tle_sinaimgbed_set['weibopass']; ?>" />
+			微博小号密码：<input style="margin:5px auto;" class="layui-input" type="password" name="weibopass" value="<?php echo $tle_sinaimgbed_set['weibopass']; ?>" />
 		</p>
 		<p>
-			图床链接前缀：<input type="text" name="weiboprefix" placeholder="图床链接前缀" value="<?=$tle_sinaimgbed_set['weiboprefix']?$tle_sinaimgbed_set['weiboprefix']:"https://ws3.sinaimg.cn/large/";?>" />
+			图床链接前缀：<input style="margin:5px auto;" class="layui-input" type="text" name="weiboprefix" placeholder="图床链接前缀" value="<?=$tle_sinaimgbed_set['weiboprefix']?$tle_sinaimgbed_set['weiboprefix']:"https://ws3.sinaimg.cn/large/";?>" />
 		</p>
 		<p>
 			是否开启前台：
@@ -62,10 +66,10 @@ function plugin_setting_view(){
 			<input type="radio" name="webimgupload" value="y" <?=isset($tle_sinaimgbed_set['webimgupload'])?($tle_sinaimgbed_set['webimgupload']=="y"?"checked":""):"";?> />是
 		</p>
 		<p>
-			前台图床背景：<input type="text" name="webimgbg" placeholder="前台图床背景" value="<?=$tle_sinaimgbed_set['webimgbg'];?>" />
+			前台图床背景：<input style="margin:5px auto;" class="layui-input" type="text" name="webimgbg" placeholder="前台图床背景" value="<?=$tle_sinaimgbed_set['webimgbg'];?>" />
 		</p>
 		<p>
-			前台图床高度：<input type="number" name="webimgheight" placeholder="前台图床高度" value="<?=$tle_sinaimgbed_set['webimgheight'];?>" />
+			前台图床高度：<input style="margin:5px auto;" class="layui-input" type="number" name="webimgheight" placeholder="前台图床高度" value="<?=$tle_sinaimgbed_set['webimgheight'];?>" />
 		</p>
 		<input type="submit" value="保存配置" />
 	</form>
@@ -175,9 +179,9 @@ $tle_sinaimgbed_set=unserialize($get_option["option_value"]);
         <?php endif;?>
 	</div>
 	<div style="float:right;">
-		<form action="./plugin.php" method="get">
+		<form class="layui-form" action="./plugin.php" method="get">
 		<input type="hidden" name="plugin" value="tle_sinaimgbed">
-		<input type="text" id="input_s" name="keyword">
+		<input class="layui-input" type="text" id="input_s" name="keyword">
 		<?php if($pid):?>
 		<input type="hidden" id="pid" name="pid" value="draft">
 		<?php endif;?>
@@ -186,9 +190,9 @@ $tle_sinaimgbed_set=unserialize($get_option["option_value"]);
 	<div style="clear:both"></div>
 </div>
 </div>
-<form action="./plugin.php?plugin=tle_sinaimgbed&action=operate_log" method="post" name="form_log" id="form_log">
+<form class="layui-form" action="./plugin.php?plugin=tle_sinaimgbed&action=operate_log" method="post" name="form_log" id="form_log">
   <input type="hidden" name="pid" value="<?php echo $pid; ?>">
-  <table width="100%" id="adm_log_list" class="item_list">
+  <table width="100%" id="adm_log_list" class="layui-table">
   <thead>
       <tr>
         <th width="511" colspan="2"><b>标题</b></th>
@@ -213,7 +217,7 @@ $tle_sinaimgbed_set=unserialize($get_option["option_value"]);
 	$author = $user_cache[$value['author']]['name'];
 	?>
       <tr>
-      <td width="21"><input type="checkbox" name="blog[]" value="<?php echo $value['gid']; ?>" class="ids" /></td>
+      <td width="21"><input type="checkbox" name="blog[]" value="<?php echo $value['gid']; ?>" class="ids" lay-skin="primary" /></td>
       <td width="490">
 		<a href="write_log.php?action=edit&gid=<?php echo $value['gid']; ?>"><?php echo $value['title']; ?></a>
       </td>
@@ -269,9 +273,14 @@ $tle_sinaimgbed_set=unserialize($get_option["option_value"]);
     <input name="token" id="token" value="<?php echo LoginAuth::genToken(); ?>" type="hidden" />
 	<input name="operate" id="operate" value="" type="hidden" />
 </form>
-<div class="page"><?php echo $pageurl; ?> (有<?php echo $logNum; ?>篇<?php echo $pid == 'draft' ? '草稿' : '文章'; ?>)</div>
+<center>
+	<div class="page"><?php echo $pageurl; ?> (有<?php echo $logNum; ?>篇<?php echo $pid == 'draft' ? '草稿' : '文章'; ?>)</div>
+</center>
 <script>
 $(document).ready(function(){
+	layui.use(["form"], function(){
+		var form = layui.form;
+	});
 	$("#adm_log_list tbody tr:odd").addClass("tralt_b");
 	$("#adm_log_list tbody tr")
 		.mouseover(function(){$(this).addClass("trover");$(this).find("span").show();})
