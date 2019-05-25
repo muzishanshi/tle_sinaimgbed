@@ -56,7 +56,7 @@ $DB = MySql::getInstance();
 				success: function (result) {
 					document.getElementById('uploadprogress').innerHTML="";
 					if (result.code == 1){
-						addToEditor('<p><img src="'+result.imgurl+'" src="" /></p>');
+						addToEditor(result.imgurl);
 						$("#preview").append('<p>'+result.imgurl+'</p>');
 					}else{
 						addToEditor('<p>第'+j+'个图片上传失败</p>');
