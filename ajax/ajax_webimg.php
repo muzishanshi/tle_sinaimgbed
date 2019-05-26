@@ -4,7 +4,7 @@ require '../libs/Sinaupload.php';
 date_default_timezone_set('Asia/Shanghai');
 if(ROLE != ROLE_ADMIN)die("no");
 
-$DB = MySql::getInstance();
+$DB = Database::getInstance();
 
 $get_option = $DB -> once_fetch_array("SELECT * FROM `".DB_PREFIX."options` WHERE `option_name` = 'tle_sinaimgbed_option' ");
 $tle_sinaimgbed_set=unserialize($get_option["option_value"]);

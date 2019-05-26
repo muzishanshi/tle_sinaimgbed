@@ -9,7 +9,7 @@ function callback_rm(){
 
 function tle_sinaimgbed_callback_do($enable){
 	global $CACHE;
-	$DB = MySql::getInstance();
+	$DB = Database::getInstance();
 	if($enable=="y"){
 		$get_option = $DB -> query("SELECT * FROM `".DB_PREFIX."options` WHERE `option_name` = 'tle_sinaimgbed_option' ");
 		$num = $DB -> num_rows($get_option);

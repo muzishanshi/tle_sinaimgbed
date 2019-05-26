@@ -2,7 +2,7 @@
 if(!defined('EMLOG_ROOT')){die('error');}
 define('TLESINAIMGBED_VERSION', '2');
 if(!empty($_POST)){
-	$DB = MySql::getInstance();
+	$DB = Database::getInstance();
 	$weibouser=empty($_POST['weibouser'])?'':trim($_POST['weibouser']);
 	$weibopass=empty($_POST['weibopass'])?'':trim($_POST['weibopass']);
 	$weiboprefix=empty($_POST['weiboprefix'])?'':trim($_POST['weiboprefix']);
@@ -32,7 +32,7 @@ if(!empty($_POST)){
 	header('Location:./plugin.php?plugin=tle_sinaimgbed');
 }
 function plugin_setting_view(){
-	$DB = MySql::getInstance();
+	$DB = Database::getInstance();
 	$get_option = $DB -> once_fetch_array("SELECT * FROM `".DB_PREFIX."options` WHERE `option_name` = 'tle_sinaimgbed_option' ");
 	$tle_sinaimgbed_set=unserialize($get_option["option_value"]);
 	?>
@@ -78,7 +78,7 @@ function plugin_setting_view(){
 }
 ?>
 <?php
-$DB = MySql::getInstance();
+$DB = Database::getInstance();
 
 $Log_Model = new Log_Model();
 $Tag_Model = new Tag_Model();

@@ -7,7 +7,7 @@
 !defined('EMLOG_ROOT') && exit('access deined!');
 date_default_timezone_set('Asia/Shanghai');
 
-$DB = MySql::getInstance();
+$DB = Database::getInstance();
 
 $get_option = $DB -> once_fetch_array("SELECT * FROM `".DB_PREFIX."options` WHERE `option_name` = 'tle_sinaimgbed_option' ");
 $tle_sinaimgbed_set=unserialize($get_option["option_value"]);

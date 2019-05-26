@@ -4,7 +4,7 @@ require '../libs/Sinaupload.php';
 date_default_timezone_set('Asia/Shanghai');
 if(ROLE != ROLE_ADMIN)die("no");
 
-$DB = MySql::getInstance();
+$DB = Database::getInstance();
 
 $action=empty($_POST['action'])?'':trim($_POST['action']);
 if($action=='upload'){
