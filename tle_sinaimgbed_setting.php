@@ -294,6 +294,8 @@ function selectUser(obj) {
     window.open("./plugin.php?plugin=tle_sinaimgbed&uid=" + obj.value + "<?php echo $isdraft?>", "_self");
 }
 $("#tle_sinaimgbed").addClass('sidebarsubmenu1');
+$("#tle_sinaimgbed").addClass('layui-this');
+$("#tle_sinaimgbed").parent().parent().parent().addClass('layui-nav-itemed');
 
 $(".tle_sinaimgbed_convert_id").each(function(){
 	var id=$(this).attr("id");

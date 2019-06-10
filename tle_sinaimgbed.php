@@ -10,7 +10,7 @@ Author URL: http://www.tongleer.com
 */
 if(!defined('EMLOG_ROOT')){die('err');}
 function tle_sinaimgbed_menu(){
-	echo '<div class="sidebarsubmenu" id="tle_sinaimgbed"><a href="./plugin.php?plugin=tle_sinaimgbed">新浪图床</a></div>';
+	echo '<div class="layui-nav-item sidebarsubmenu" id="tle_sinaimgbed"><a href="./plugin.php?plugin=tle_sinaimgbed">新浪图床</a></div>';
 }
 addAction('adm_sidebar_ext', 'tle_sinaimgbed_menu');
 function tle_sinaimgbed_head(){
