@@ -100,11 +100,11 @@ function addToEditor(url){
 		KindEditor.insertHtml('#content','<img src="'+url+'" />');
 	}else if(typeof(UE)!='undefined'){
 		UE.getEditor('content').execCommand('insertHtml','<img src="'+url+'" />');
-	}else if(contentLayUIEditor!=null&&typeof(contentLayUIEditor)!='undefined'&&layedit!=null&&typeof(layedit)!='undefined'){
+	}else if(typeof(contentLayUIEditor)!='undefined'&&typeof(layedit)!='undefined'){
 		layedit.setContent(contentLayUIEditor,layedit.getContent(contentLayUIEditor)+'<p><img src="'+url+'" src="" /></p>',false);
 	}else if(document.getElementById('contenteditormd')!=null&&typeof(document.getElementById('contenteditormd'))!='undefined'){
 		contenteditormd.cm.replaceSelection('\r\n![]('+url+')\r\n');
-	}else if(document.getElementById('contenttinymce')!=null&&typeof(document.getElementById('contenttinymce'))!='undefined'){
+	}else if(document.getElementById('editor_content')!=null&&typeof(document.getElementById('editor_content'))!='undefined'){
 		tinyMCE.execCommand('mceInsertContent',false,'<img src=\"'+url+'\" title="" border=\"0\" width="100%" />');
 	}else{
 		var msg=document.getElementById('content');
