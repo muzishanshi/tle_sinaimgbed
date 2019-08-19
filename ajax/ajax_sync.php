@@ -34,6 +34,7 @@ if($action=='updateWBTCLinks'){
 		if(isset($arr['data']['pics']['pic_1']['pid'])){
 			$imgurl="".$tle_sinaimgbed_set['weiboprefix'].$arr['data']['pics']['pic_1']['pid'].".jpg";
 			$post_content=str_replace($url,$imgurl,$post_content);
+			$post_content=str_replace("'","\"",$post_content);
 			
 			if(strpos($url,BLOG_URL)!== false){
 				$path=str_replace(BLOG_URL,"",$url);
@@ -70,6 +71,7 @@ if($action=='updateWBTCLinks'){
 		file_put_contents(dirname(__FILE__)."/../../../uploadfile/".$uploaddir.$uploadfile, $html);
 		$imgurl=BLOG_URL."content/uploadfile/".$uploaddir.$uploadfile;
 		$post_content=str_replace($url,$imgurl,$post_content);
+		$post_content=str_replace("'","\"",$post_content);
 	}
 	$DB->query("UPDATE " . DB_PREFIX . "blog SET content='$post_content' WHERE gid=$postid");
 	$json=json_encode(array("status"=>"ok","msg"=>"本地化成功"));
