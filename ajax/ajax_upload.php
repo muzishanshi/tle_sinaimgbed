@@ -32,7 +32,7 @@ if($action=='upload'){
 		$utfname=$time."_".$_FILES["file"]["name"];
 		$gbkname = iconv("utf-8", "gbk", $utfname);
 		move_uploaded_file($_FILES["file"]["tmp_name"], dirname(__FILE__).'/'.$gbkname);
-		$img=BLOG_URL."content/plugins/tle_sinaimgbed/".$utfname;
+		$img=BLOG_URL."content/plugins/tle_sinaimgbed/ajax/".$utfname;
 		/* 修改了下风格，并添加文章关键词作为微博话题，提高与其他相关微博的关联率 */
 		$string1 = '【新浪图床】';
 		$string2 = '来源：'.BLOG_URL;
@@ -42,7 +42,12 @@ if($action=='upload'){
 		$arr=$c->share($postData,$img);
 		@unlink(dirname(__FILE__).'/'.$gbkname);
 		if(isset($arr["original_pic"])){
-			$json=json_encode(array("status"=>"ok","msg"=>"上传结果","url"=>$arr["original_pic"]));
+			if($tle_sinaimgbed_set["weibohttps"]=="y"){
+				$original_pic=str_replace("http://","https://",$arr["original_pic"]);
+			}else{
+				$original_pic=$arr["original_pic"];
+			}
+			$json=json_encode(array("status"=>"ok","msg"=>"上传结果","url"=>$original_pic));
 			echo $json;
 		}else{
 			$json=json_encode(array("status"=>"fail","msg"=>"上传失败"));

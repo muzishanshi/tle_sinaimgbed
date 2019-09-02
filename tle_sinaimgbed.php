@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: 阿里新浪微博图床
-Version: 1.0.3
+Version: 1.0.4
 Description: 这是一款简单的Emlog微博图床插件，可把图片上传到阿里新浪微博存储，支持远程和本地链接互相转换、自定义图床链接前缀，可上传到自己的微博相册。
 Plugin URL: http://www.tongleer.com/1696.html
 ForEmlog: 5.3.1
@@ -19,7 +19,12 @@ function tle_sinaimgbed_head(){
 }
 addAction('adm_writelog_head', 'tle_sinaimgbed_head');
 function tle_sinaimgbed_webimg(){
-	require 'tle_sinaimgbed_webimg.php';
+	$DB = Database::getInstance();
+	$get_option = $DB -> once_fetch_array("SELECT * FROM `".DB_PREFIX."options` WHERE `option_name` = 'tle_sinaimgbed_option' ");
+	$tle_sinaimgbed_set=unserialize($get_option["option_value"]);
+	if($tle_sinaimgbed_set['webimgupload']=="y"){
+		require 'tle_sinaimgbed_webimg.php';
+	}
 }
 addAction('diff_side', 'tle_sinaimgbed_webimg');
 

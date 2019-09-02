@@ -1,8 +1,10 @@
 <?php
 if(!defined('EMLOG_ROOT')){die('error');}
-define('TLESINAIMGBED_VERSION', '2');
+define('TLESINAIMGBED_VERSION', '4');
 if(!empty($_POST)){
 	$DB = Database::getInstance();
+	$albumtype=empty($_POST['albumtype'])?'':trim($_POST['albumtype']);
+	$weibohttps=empty($_POST['weibohttps'])?'':trim($_POST['weibohttps']);
 	$weibouser=empty($_POST['weibouser'])?'':trim($_POST['weibouser']);
 	$weibopass=empty($_POST['weibopass'])?'':trim($_POST['weibopass']);
 	$weiboprefix=empty($_POST['weiboprefix'])?'':trim($_POST['weiboprefix']);
@@ -10,7 +12,10 @@ if(!empty($_POST)){
 	$webimgupload=empty($_POST['webimgupload'])?'':trim($_POST['webimgupload']);
 	$webimgbg=empty($_POST['webimgbg'])?'':trim($_POST['webimgbg']);
 	$webimgheight=empty($_POST['webimgheight'])?'':trim($_POST['webimgheight']);
+	$aliprefix=empty($_POST['aliprefix'])?'':trim($_POST['aliprefix']);
 	if(get_magic_quotes_gpc()){
+		$albumtype=stripslashes($albumtype);
+		$weibohttps=stripslashes($weibohttps);
 		$weibouser=stripslashes($weibouser);
 		$weibopass=stripslashes($weibopass);
 		$weiboprefix=stripslashes($weiboprefix);
@@ -18,9 +23,12 @@ if(!empty($_POST)){
 		$webimgupload=stripslashes($webimgupload);
 		$webimgbg=stripslashes($webimgbg);
 		$webimgheight=stripslashes($webimgheight);
+		$aliprefix=stripslashes($aliprefix);
 	}
 	$get_option = $DB -> once_fetch_array("SELECT * FROM `".DB_PREFIX."options` WHERE `option_name` = 'tle_sinaimgbed_option' ");
 	$tle_sinaimgbed_set=unserialize($get_option["option_value"]);
+	$tle_sinaimgbed_set["albumtype"]=$albumtype;
+	$tle_sinaimgbed_set["weibohttps"]=$weibohttps;
 	$tle_sinaimgbed_set["weibouser"]=$weibouser;
 	$tle_sinaimgbed_set["weibopass"]=$weibopass;
 	$tle_sinaimgbed_set["weiboprefix"]=$weiboprefix;
@@ -28,6 +36,7 @@ if(!empty($_POST)){
 	$tle_sinaimgbed_set["webimgupload"]=$webimgupload;
 	$tle_sinaimgbed_set["webimgbg"]=$webimgbg;
 	$tle_sinaimgbed_set["webimgheight"]=$webimgheight;
+	$tle_sinaimgbed_set["aliprefix"]=$aliprefix;
 	$DB -> query("UPDATE `".DB_PREFIX."options`  SET `option_value` = '".serialize($tle_sinaimgbed_set)."' WHERE `option_name` = 'tle_sinaimgbed_option' ");
 	header('Location:./plugin.php?plugin=tle_sinaimgbed');
 }
@@ -43,23 +52,25 @@ function plugin_setting_view(){
 	</fieldset>
 	<div id="versionCode"></div>
 	<fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
-	  <legend>图床设置</legend>
+	  <legend>图床设置（请首先选择好每一个单选项并保存设置）</legend>
 	</fieldset>
 	<form class="layui-form" method="post">
 		<p>
-			是否保存相册：
+			保存微博相册：
+			<!--
 			<input type="radio" name="issavealbum" value="n" <?=isset($tle_sinaimgbed_set['issavealbum'])?($tle_sinaimgbed_set['issavealbum']=="n"?"checked":""):"checked";?> />否
-			<input type="radio" name="issavealbum" value="y" <?=isset($tle_sinaimgbed_set['issavealbum'])?($tle_sinaimgbed_set['issavealbum']=="y"?"checked":""):"";?> />是
-			（需开启并配置好<a href="http://www.emlog.net/plugin/310" target="_blank">新浪微博同步插件</a>）
+			-->
+			<input type="radio" name="issavealbum" value="y" <?=isset($tle_sinaimgbed_set['issavealbum'])?($tle_sinaimgbed_set['issavealbum']=="y"?"checked":""):"";?> />是<br />
+			<small>（因微博官方限制，故只能选择“是”并开启配置好<a href="http://www.emlog.net/plugin/310" target="_blank"><font color='blue'>新浪微博同步插件</font>配合使用</a>）</small>
 		</p>
 		<p>
-			微博小号账号：<input style="margin:5px auto;" class="layui-input" name="weibouser" value="<?php echo $tle_sinaimgbed_set['weibouser']; ?>" />
+			<input type="hidden" style="margin:5px auto;" class="layui-input" name="weibouser" value="<?php echo $tle_sinaimgbed_set['weibouser']; ?>" placeholder="微博小号账号" />
 		</p>
 		<p>
-			微博小号密码：<input style="margin:5px auto;" class="layui-input" type="password" name="weibopass" value="<?php echo $tle_sinaimgbed_set['weibopass']; ?>" />
+			<input type="hidden" style="margin:5px auto;" class="layui-input" type="password" name="weibopass" value="<?php echo $tle_sinaimgbed_set['weibopass']; ?>" placeholder="微博小号密码" />
 		</p>
 		<p>
-			图床链接前缀：<input style="margin:5px auto;" class="layui-input" type="text" name="weiboprefix" placeholder="图床链接前缀" value="<?=$tle_sinaimgbed_set['weiboprefix']?$tle_sinaimgbed_set['weiboprefix']:"https://ws3.sinaimg.cn/large/";?>" />
+			<input style="margin:5px auto;" class="layui-input" type="hidden" name="weiboprefix" placeholder="图床链接前缀" value="<?=$tle_sinaimgbed_set['weiboprefix']?$tle_sinaimgbed_set['weiboprefix']:"https://ws3.sinaimg.cn/large/";?>" placeholder="图床链接前缀" />
 		</p>
 		<p>
 			是否开启前台：
@@ -67,12 +78,31 @@ function plugin_setting_view(){
 			<input type="radio" name="webimgupload" value="y" <?=isset($tle_sinaimgbed_set['webimgupload'])?($tle_sinaimgbed_set['webimgupload']=="y"?"checked":""):"";?> />是
 		</p>
 		<p>
+			前台图床类型：
+			<input type="radio" name="albumtype" value="ali" <?=isset($tle_sinaimgbed_set['albumtype'])?($tle_sinaimgbed_set['albumtype']=="ali"?"checked":""):"checked";?> />阿里图床
+			<input type="radio" name="albumtype" value="weibo" <?=isset($tle_sinaimgbed_set['albumtype'])?($tle_sinaimgbed_set['albumtype']=="weibo"?"checked":""):"";?> />微博图床
+		</p>
+		<p>
+			微博https链接：
+			<input type="radio" name="weibohttps" value="n" <?=isset($tle_sinaimgbed_set['weibohttps'])?($tle_sinaimgbed_set['weibohttps']=="n"?"checked":""):"checked";?> />否
+			<input type="radio" name="weibohttps" value="y" <?=isset($tle_sinaimgbed_set['weibohttps'])?($tle_sinaimgbed_set['weibohttps']=="y"?"checked":""):"";?> />是
+		</p>
+		<p>
+			阿里图床前缀：<input style="margin:5px auto;" class="layui-input" type="text" name="aliprefix" placeholder="阿里图床前缀" value="<?=$tle_sinaimgbed_set['aliprefix']?$tle_sinaimgbed_set['aliprefix']:"https://ae01.alicdn.com/kf/";?>" />
+		</p>
+		<p>
 			前台图床背景：<input style="margin:5px auto;" class="layui-input" type="text" name="webimgbg" placeholder="前台图床背景" value="<?=$tle_sinaimgbed_set['webimgbg'];?>" />
 		</p>
 		<p>
 			前台图床高度：<input style="margin:5px auto;" class="layui-input" type="number" name="webimgheight" placeholder="前台图床高度" value="<?=$tle_sinaimgbed_set['webimgheight'];?>" />
 		</p>
-		<input type="submit" value="保存配置" />
+		<p>
+			<small>特别注意：<br />
+			1、在微博同步插件中，微博开放平台的安全域名要与网站域名一致；<br />
+			2、保存到微博相册时，如果频繁会禁用当前微博的接口，所以每次只能上传一张图片；<br />
+			3、<font color='blue'>若选择启用https链接，则会受微博防盗链影响，须要在网站的head标签中加入&lt;meta name='referrer' content='same-origin'>代码才能显示。</font></small>
+		</p>
+		<input type="submit" class="layui-btn" value="保存配置" />
 	</form>
 	</div>
 	<?php
@@ -235,15 +265,28 @@ function plugin_setting_view(){
 			preg_match_all( "/<(img|IMG).*?src=[\'|\"](.*?)[\'|\"].*?[\/]?>/", $post_content, $matches );
 			if(count($matches[2])>0){
 				//转换微博图传链接
+				/*
 				$tle_weiboprefix=str_replace("/","\/",$tle_sinaimgbed_set['weiboprefix']);
 				$tle_weiboprefix=str_replace(".","\.",$tle_weiboprefix);
 				preg_match_all( "/<(img|IMG).*?src=[\'|\"](?!".$tle_weiboprefix.")(.*?)[\'|\"].*?[\/]?>/", $post_content, $submatches );
 				if(count($submatches[2])>0){
 					echo '
-						<a href="javascript:;" class="tle_sinaimgbed_convert_id" id="tle_sinaimgbed_convert_id'.$value['gid'].'" data-id="'.$value['gid'].'">转换</a>
+						<a href="javascript:;" class="tle_sinaimgbed_convert_id" id="tle_sinaimgbed_convert_id'.$value['gid'].'" data-id="'.$value['gid'].'">转换微博</a>
 					';
 				}else{
-					echo '无需转换';
+					echo '无需转换微博';
+				}
+				*/
+				$aliprefix=!empty($tle_sinaimgbed_set['aliprefix'])?$tle_sinaimgbed_set['aliprefix']:"https://ae01.alicdn.com/kf/";
+				$aliprefix=str_replace("/","\/",$aliprefix);
+				$aliprefix=str_replace(".","\.",$aliprefix);
+				preg_match_all( "/<(img|IMG).*?src=[\'|\"](?!".$aliprefix.")(.*?)[\'|\"].*?[\/]?>/", $post_content, $submatches );
+				if(count($submatches[2])>0){
+					echo '
+						<a href="javascript:;" class="tle_aliimgbed_convert_id" id="tle_aliimgbed_convert_id'.$id.'" data-id="'.$value['gid'].'">转换阿里</a>
+					';
+				}else{
+					echo '无需转换阿里';
 				}
 				//图片本地化
 				$blogurl=str_replace("/","\/",BLOG_URL);
@@ -296,10 +339,24 @@ function plugin_setting_view(){
 	$("#tle_sinaimgbed").addClass('layui-this');
 	$("#tle_sinaimgbed").parent().parent().parent().addClass('layui-nav-itemed');
 
+	/*
 	$(".tle_sinaimgbed_convert_id").each(function(){
 		var id=$(this).attr("id");
 		$("#"+id).click( function () {
 			$.post("<?=BLOG_URL.'content/plugins/tle_sinaimgbed/ajax/ajax_sync.php';?>",{action:"updateWBTCLinks",postid:$(this).attr("data-id")},function(data){
+				var data=JSON.parse(data);
+				if(data.status=="noneconfig"){
+					alert(data.msg);
+				}
+				window.location.reload();
+			});
+		});
+	});
+	*/
+	$(".tle_aliimgbed_convert_id").each(function(){
+		var id=$(this).attr("id");
+		$("#"+id).click( function () {
+			$.post("<?=BLOG_URL.'content/plugins/tle_sinaimgbed/ajax/ajax_sync.php';?>",{action:"updateALTCLinks",postid:$(this).attr("data-id")},function(data){
 				var data=JSON.parse(data);
 				if(data.status=="noneconfig"){
 					alert(data.msg);

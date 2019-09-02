@@ -34,7 +34,7 @@ try{
 </head>
 <body>
 <div id="weibofile_webimg_container" onclick="weibofile_file.click()" style="margin:5px 0px;position: relative; border: 2px dashed #e2e2e2; background-image:url('<?=$tle_sinaimgbed_set["webimgbg"];?>'); text-align: center; cursor: pointer;height: 100%;">
-	<p id="weibofile_webimg_upload" style="height: <?=$tle_sinaimgbed_set["webimgheight"];?>px;line-height:<?=$tle_sinaimgbed_set["webimgheight"];?>px;position: relative;font-size:20px; color:#d3d3d3;">微博图床</p> 
+	<p id="weibofile_webimg_upload" style="height: <?=$tle_sinaimgbed_set["webimgheight"];?>px;line-height:<?=$tle_sinaimgbed_set["webimgheight"];?>px;position: relative;font-size:20px; color:#d3d3d3;">点击选择图片上传至图床</p> 
 	<input type="file" id="weibofile_file" style="display:none" accept="image/*" <?=$isMultiple;?> /> 
 </div>
 <script>
@@ -81,7 +81,7 @@ function upLoad(file){
 			}else if(data.status=="disable"){
 				weibofile_webimgdiv.innerHTML = data.msg;
 			}else if(data.status=="ok"){
-				weibofile_webimgdiv.innerHTML = '微博图床';
+				weibofile_webimgdiv.innerHTML = '点击选择图片上传至图床';
 				layer.confirm('<small><font color="green">'+data.msg+'<br />'+data.hrefs+'</font></small><textarea style="width:100%;margin: 0 auto;" rows="2" onfocus="this.select();">'+data.codes+'</textarea>', {
 					btn: ['关闭']
 				},function(index){
