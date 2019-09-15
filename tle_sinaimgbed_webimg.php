@@ -32,7 +32,7 @@ try{
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/layer/2.3/layer.js"></script>
 </head>
 <body>
-<div id="weibofile_webimg_container" onclick="weibofile_file.click()" style="margin:5px 0px;position: relative; border: 2px dashed #e2e2e2; background-image:url('<?=$tle_sinaimgbed_set["webimgbg"];?>'); text-align: center; cursor: pointer;height: 100%;">
+<div id="weibofile_webimg_container" onclick="weibofile_file.click()" style="margin:5px 0px;position: relative; border: 2px dashed #e2e2e2; background-image:url('<?=$tle_sinaimgbed_set["webimgbg"];?>'); text-align: center; cursor: pointer;">
 	<p id="weibofile_webimg_upload" style="height: <?=$tle_sinaimgbed_set["webimgheight"];?>px;line-height:<?=$tle_sinaimgbed_set["webimgheight"];?>px;position: relative;font-size:20px; color:#d3d3d3;">点击选择图片上传至图床</p> 
 	<input type="file" id="weibofile_file" style="display:none" accept="image/*" <?=$isMultiple;?> /> 
 </div>
