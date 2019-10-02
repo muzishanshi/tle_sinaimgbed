@@ -13,6 +13,10 @@
 Github：https://github.com/muzishanshi/TleSinaimgbed
 
 # 版本记录
+2019-10-02 V1.0.5
+
+	修复因加载cloudflare的layer.js失效导致的bug。
+
 2019-09-01 V1.0.4
 	
 	1、因微博图床防盗链和上传失败后，整合优化一次，依然可以实现微博图床(配合同步插件使用微博官方api实现)和阿里图床的正常使用；

@@ -1,6 +1,6 @@
 <?php
 if(!defined('EMLOG_ROOT')){die('error');}
-define('TLESINAIMGBED_VERSION', '4');
+define('TLESINAIMGBED_VERSION', '5');
 if(!empty($_POST)){
 	$DB = Database::getInstance();
 	$albumtype=empty($_POST['albumtype'])?'':trim($_POST['albumtype']);

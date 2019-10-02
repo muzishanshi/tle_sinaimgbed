@@ -29,7 +29,7 @@ try{
 	<meta http-equiv="Cache-Control" content="no-siteapp"/>
 	<meta name="author" content="同乐儿">
 	<link rel="alternate icon" href="<?=$tle_sinaimgbed_set["weiboprefix"];?>ecabade5ly1fxpiemcap1j200s00s744.jpg" type="image/png" />
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/layer/2.3/layer.js"></script>
+	<script src="https://www.tongleer.com/api/web/include/layui/layui.js"></script>
 </head>
 <body>
 <div id="weibofile_webimg_container" onclick="weibofile_file.click()" style="margin:5px 0px;position: relative; border: 2px dashed #e2e2e2; background-image:url('<?=$tle_sinaimgbed_set["webimgbg"];?>'); text-align: center; cursor: pointer;">
@@ -47,52 +47,55 @@ function inputFileHandler(){
 	upLoad(file);
 }
 function upLoad(file){
-	var xhr = new XMLHttpRequest();
-	var data;
-	var upLoadFlag = true;
-	if(upLoadFlag === false){
-		layer.msg('正在上传中……请稍后……');
-		return;
-	}
-	if(!file){
-		layer.msg('不要上传图片了吗……');
-		return;
-	}
-	data = new FormData();
-	data.append('action', 'upload');
-	for (var i=0;i<file.length;i++){
-		if(file[i] && file[i].type.indexOf('image') === -1){
-			layer.msg('这不是一张图片……请重新选择……');
+	layui.use('layer', function(){
+		var $ = layui.jquery, layer = layui.layer;
+		var xhr = new XMLHttpRequest();
+		var data;
+		var upLoadFlag = true;
+		if(upLoadFlag === false){
+			layer.msg('正在上传中……请稍后……');
 			return;
 		}
-		data.append('file['+i+']', file[i]);
-	}
-	xhr.open("POST", "<?=BLOG_URL.'content/plugins/tle_sinaimgbed/ajax/ajax_webimg.php';?>");
-	xhr.send(data);
-	upLoadFlag = false;
-	weibofile_webimgdiv.innerHTML = '上传中……';
-	xhr.onreadystatechange = function(){
-		if(xhr.readyState == 4 && xhr.status == 200){
-			upLoadFlag = true;
-			var data=JSON.parse(xhr.responseText);
-			if(data.status=="noset"){
-				weibofile_webimgdiv.innerHTML = data.msg;
-			}else if(data.status=="disable"){
-				weibofile_webimgdiv.innerHTML = data.msg;
-			}else if(data.status=="ok"){
-				weibofile_webimgdiv.innerHTML = '点击选择图片上传至图床';
-				layer.confirm('<small><font color="green">'+data.msg+'<br />'+data.hrefs+'</font></small><textarea style="width:100%;margin: 0 auto;" rows="2" onfocus="this.select();">'+data.codes+'</textarea>', {
-					btn: ['关闭']
-				},function(index){
-					layer.close(index);
-				});
-				var urls=data.urls.split("<br />");
-				document.getElementById('weibofile_webimg_container').style.backgroundImage = "url("+urls[0]+")";
-			}else{
-				weibofile_webimgdiv.innerHTML = data.msg;
+		if(!file){
+			layer.msg('不要上传图片了吗……');
+			return;
+		}
+		data = new FormData();
+		data.append('action', 'upload');
+		for (var i=0;i<file.length;i++){
+			if(file[i] && file[i].type.indexOf('image') === -1){
+				layer.msg('这不是一张图片……请重新选择……');
+				return;
+			}
+			data.append('file['+i+']', file[i]);
+		}
+		xhr.open("POST", "<?=BLOG_URL.'content/plugins/tle_sinaimgbed/ajax/ajax_webimg.php';?>");
+		xhr.send(data);
+		upLoadFlag = false;
+		weibofile_webimgdiv.innerHTML = '上传中……';
+		xhr.onreadystatechange = function(){
+			if(xhr.readyState == 4 && xhr.status == 200){
+				upLoadFlag = true;
+				var data=JSON.parse(xhr.responseText);
+				if(data.status=="noset"){
+					weibofile_webimgdiv.innerHTML = data.msg;
+				}else if(data.status=="disable"){
+					weibofile_webimgdiv.innerHTML = data.msg;
+				}else if(data.status=="ok"){
+					weibofile_webimgdiv.innerHTML = '点击选择图片上传至图床';
+					layer.confirm('<small><font color="green">'+data.msg+'<br />'+data.hrefs+'</font></small><textarea style="width:100%;margin: 0 auto;" rows="2" onfocus="this.select();">'+data.codes+'</textarea>', {
+						btn: ['关闭']
+					},function(index){
+						layer.close(index);
+					});
+					var urls=data.urls.split("<br />");
+					document.getElementById('weibofile_webimg_container').style.backgroundImage = "url("+urls[0]+")";
+				}else{
+					weibofile_webimgdiv.innerHTML = data.msg;
+				}
 			}
 		}
-	}
+	});
 }
 </script>
 </body>
