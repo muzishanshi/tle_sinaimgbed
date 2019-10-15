@@ -1,12 +1,7 @@
-<?php
-if(!defined('EMLOG_ROOT')){die('error');}
-
-$DB = Database::getInstance();
-?>
-<script src="https://lib.baomitu.com/jquery/3.4.0/jquery.min.js" type="text/javascript"></script>
+<?php if(!defined('EMLOG_ROOT')){die('error');}?>
 <style type="text/css">
     .uploadbutton{margin: auto;text-align: center;background-color: rgba(255, 255, 255, .3);}
-    .uploadbutton input[type=file] {opacity:0;width:102px;height:31px;position:absolute;display:inline-block;}
+    .uploadbutton input[type=file] {opacity:0;width:140px;height:30px;position:absolute;display:inline-block;}
 	.form-control:focus{background-color: rgba(255, 255, 255, .3);}
 </style>
 <div class="uploadbutton" style="margin:auto;">
@@ -29,7 +24,7 @@ $DB = Database::getInstance();
 		}
 	});
 
-	var url = 'https://api.uomg.com/api/image.ali';
+	var aliurl = 'https://api.uomg.com/api/image.ali';
 	$(document).ready(function() {
 		$("#alilocalpic").change(function(e) {
 			alilocalupload(this.files)
@@ -45,7 +40,7 @@ $DB = Database::getInstance();
 			imageData.append("file", 'multipart');
 			imageData.append("Filedata", files[j]);
 			$.ajax({
-				url: url,
+				url: aliurl,
 				type: 'POST',
 				data: imageData,
 				cache: false,
@@ -79,7 +74,7 @@ $DB = Database::getInstance();
 		$('#remotepicwindow').hide();
 		for(var j = 0,len = UrlArr.length; j < len; j++){
 			console.log(UrlArr[j]);
-			$.getJSON(url, {imgurl: UrlArr[j]}, function(result, textStatus) {
+			$.getJSON(aliurl, {imgurl: UrlArr[j]}, function(result, textStatus) {
 				document.getElementById('uploadprogress').innerHTML="";
 				if (result.code == 1){
 					addToEditor(result.imgurl);

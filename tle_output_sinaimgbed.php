@@ -13,17 +13,19 @@ $tle_sinaimgbed_set=unserialize($get_option["option_value"]);
 .sinaimgbed_act{padding-top:50px;width:160px;height:70px;background:rgba(0,0,0,0.2);text-align:center;}
 .sinaimgbed_act a{color:#FFF;font-weight:bold;text-shadow:1px 1px 3px #000;}
 </style>
+<span onclick="tle_sinaimgbed_show();" class="show_advset"><a href="javascript:;" class="layui-btn layui-btn-primary layui-btn-xs">新浪图床</a></span>
+<div style="display:none;" id="sinaimgbed_show">
+	<input type="file" onchange="sinaimgbed_cpick()" id="sinaimgbed_pick"<?php if($tle_sinaimgbed_set["issavealbum"]=="n"){?> multiple="multiple"<?php }?> accept="image/jpeg,image/png,image/gif" />
+	<p><input type="button" onclick="sinaimgbed_cpush()" id="sinaimgbed_push" value="开始" class="layui-btn layui-btn-default layui-btn-xs" /></p>
+	<div id="sinaimgbed_list"></div>
+</div>
 <script>
 var BLOG_URL="<?=BLOG_URL;?>";
-function tle_sinaimgbed_show(node){
-	var item=document.createElement("div");
-	item.setAttribute("id","tle_sinaimgbed_body");
-	item.innerHTML="<input type=\"file\" onchange=\"sinaimgbed_cpick()\" id=\"sinaimgbed_pick\"<?php if($tle_sinaimgbed_set["issavealbum"]=="n"){?> multiple=\"multiple\"<?php }?> accept=\"image/jpeg,image/png,image/gif\" /><p><input type=\"button\" onclick=\"sinaimgbed_cpush()\" id=\"sinaimgbed_push\" value=\"开始\" /></p><div id=\"sinaimgbed_list\"></div>";
-	if(document.getElementById("tle_sinaimgbed_body")){
-		node.parentNode.removeChild(document.getElementById("tle_sinaimgbed_body"));
-	}
-	else{
-		node.parentNode.appendChild(item);
+function tle_sinaimgbed_show(){
+	if($("#sinaimgbed_show").css("display")=="none"){
+		$("#sinaimgbed_show").css("display","block");
+	}else{
+		$("#sinaimgbed_show").css("display","none");
 	}
 }
 </script>

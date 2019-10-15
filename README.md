@@ -13,6 +13,10 @@
 Github：https://github.com/muzishanshi/TleSinaimgbed
 
 # 版本记录
+2019-10-15 V1.0.6
+
+	新增京东图床、360图床。
+
 2019-10-02 V1.0.5
 
 	修复因加载cloudflare的layer.js失效导致的bug。

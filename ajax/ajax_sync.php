@@ -48,45 +48,6 @@ if($action=='updateWBTCLinks'){
 	@unlink($savepath);
 	$json=json_encode(array("status"=>"ok","msg"=>"转换成功"));
 	echo $json;
-}else if($action=='updateALTCLinks'){
-	if(!isset($tle_sinaimgbed_set['aliprefix'])){
-		$json=json_encode(array("status"=>"noneconfig","msg"=>"请先配置阿里图床前缀"));
-		echo $json;
-		exit;
-	}
-	$postid = isset($_POST['postid']) ? addslashes($_POST['postid']) : '';
-	$blog = $DB -> once_fetch_array("SELECT * FROM `".DB_PREFIX."blog` WHERE `gid` = $postid ");
-	$post_content = $blog["content"];
-	$aliprefix=str_replace("/","\/",$tle_sinaimgbed_set['aliprefix']);
-	$aliprefix=str_replace(".","\.",$aliprefix);
-	preg_match_all( "/<(img|IMG).*?src=[\'|\"](?!".$aliprefix.")(.*?)[\'|\"].*?[\/]?>/", $post_content, $submatches );
-	foreach($submatches[2] as $url){
-		$curl = curl_init();
-		curl_setopt($curl, CURLOPT_URL, 'https://www.tongleer.com/api/web/?action=weiboimg&imgurl='.$url);
-		curl_setopt($curl, CURLOPT_HEADER, 1);
-		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-		$result = curl_exec($curl);
-		if (curl_getinfo($curl, CURLINFO_HTTP_CODE) == '200') {
-			$headerSize = curl_getinfo($curl, CURLINFO_HEADER_SIZE);
-			$header = substr($result, 0, $headerSize);
-			$body = substr($result, $headerSize);
-		}
-		curl_close($curl);
-		$arr=json_decode($body,true);
-		if(isset($arr['data']["src"])){
-			$imgurl=$tle_sinaimgbed_set['aliprefix'].basename($arr['data']["src"]);
-			$post_content=str_replace($url,$imgurl,$post_content);
-			
-			if(strpos($url,BLOG_URL)!== false){
-				$path=str_replace(BLOG_URL,"",$url);
-				$oldpath=EMLOG_ROOT."/".$path;
-				@unlink($oldpath);
-			}
-		}
-	}
-	$DB->query("UPDATE " . DB_PREFIX . "blog SET content='$post_content' WHERE gid=$postid");
-	$json=json_encode(array("status"=>"ok","msg"=>"转换成功"));
-	echo $json;
 }else if($action=='localWBTCLinks'){
 	$uploaddir=date("Y").date("m")."/";
 	if(!is_dir(dirname(__FILE__)."/../../../uploadfile/".$uploaddir)){
@@ -120,6 +81,129 @@ if($action=='updateWBTCLinks'){
 	}
 	$DB->query("UPDATE " . DB_PREFIX . "blog SET content='$post_content' WHERE gid=$postid");
 	$json=json_encode(array("status"=>"ok","msg"=>"本地化成功"));
+	echo $json;
+}else if($action=='updateALTCLinks'){
+	if(!isset($tle_sinaimgbed_set['aliprefix'])){
+		$json=json_encode(array("status"=>"noneconfig","msg"=>"请先配置阿里图床前缀"));
+		echo $json;
+		exit;
+	}
+	$postid = isset($_POST['postid']) ? addslashes($_POST['postid']) : '';
+	$blog = $DB -> once_fetch_array("SELECT * FROM `".DB_PREFIX."blog` WHERE `gid` = $postid ");
+	$post_content = $blog["content"];
+	$aliprefix=str_replace("/","\/",$tle_sinaimgbed_set['aliprefix']);
+	$aliprefix=str_replace(".","\.",$aliprefix);
+	preg_match_all( "/<(img|IMG).*?src=[\'|\"](?!".$aliprefix.")(.*?)[\'|\"].*?[\/]?>/", $post_content, $submatches );
+	foreach($submatches[2] as $url){
+		$curl = curl_init();
+		curl_setopt($curl, CURLOPT_URL, 'https://www.tongleer.com/api/web/?action=weiboimg&type=ali&imgurl='.$url);
+		curl_setopt($curl, CURLOPT_HEADER, 1);
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+		$result = curl_exec($curl);
+		if (curl_getinfo($curl, CURLINFO_HTTP_CODE) == '200') {
+			$headerSize = curl_getinfo($curl, CURLINFO_HEADER_SIZE);
+			$header = substr($result, 0, $headerSize);
+			$body = substr($result, $headerSize);
+		}
+		curl_close($curl);
+		$arr=json_decode($body,true);
+		if($arr['code']==0){
+			if(isset($arr['data']["src"])){
+				$imgurl=$tle_sinaimgbed_set['aliprefix'].basename($arr['data']["src"]);
+				$post_content=str_replace($url,$imgurl,$post_content);
+				
+				if(strpos($url,BLOG_URL)!== false){
+					$path=str_replace(BLOG_URL,"",$url);
+					$oldpath=EMLOG_ROOT."/".$path;
+					@unlink($oldpath);
+				}
+			}
+		}
+	}
+	$DB->query("UPDATE " . DB_PREFIX . "blog SET content='$post_content' WHERE gid=$postid");
+	$json=json_encode(array("status"=>"ok","msg"=>"转换成功"));
+	echo $json;
+}else if($action=='updateQHTCLinks'){
+	if(!isset($tle_sinaimgbed_set['qihuprefix'])){
+		$json=json_encode(array("status"=>"noneconfig","msg"=>"请先配置奇虎360图床前缀"));
+		echo $json;
+		exit;
+	}
+	$postid = isset($_POST['postid']) ? addslashes($_POST['postid']) : '';
+	$blog = $DB -> once_fetch_array("SELECT * FROM `".DB_PREFIX."blog` WHERE `gid` = $postid ");
+	$post_content = $blog["content"];
+	$qihuprefix=str_replace("/","\/",$tle_sinaimgbed_set['qihuprefix']);
+	$qihuprefix=str_replace(".","\.",$qihuprefix);
+	preg_match_all( "/<(img|IMG).*?src=[\'|\"](?!".$qihuprefix.")(.*?)[\'|\"].*?[\/]?>/", $post_content, $submatches );
+	foreach($submatches[2] as $url){
+		$curl = curl_init();
+		curl_setopt($curl, CURLOPT_URL, 'https://www.tongleer.com/api/web/?action=weiboimg&type=qihu&imgurl='.$url);
+		curl_setopt($curl, CURLOPT_HEADER, 1);
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+		$result = curl_exec($curl);
+		if (curl_getinfo($curl, CURLINFO_HTTP_CODE) == '200') {
+			$headerSize = curl_getinfo($curl, CURLINFO_HEADER_SIZE);
+			$header = substr($result, 0, $headerSize);
+			$body = substr($result, $headerSize);
+		}
+		curl_close($curl);
+		$arr=json_decode($body,true);
+		if($arr['code']==0){
+			if(isset($arr['data']["src"])){
+				$imgurl=$tle_sinaimgbed_set['qihuprefix'].basename($arr['data']["src"]);
+				$post_content=str_replace($url,$imgurl,$post_content);
+				
+				if(strpos($url,BLOG_URL)!== false){
+					$path=str_replace(BLOG_URL,"",$url);
+					$oldpath=EMLOG_ROOT."/".$path;
+					@unlink($oldpath);
+				}
+			}
+		}
+	}
+	$DB->query("UPDATE " . DB_PREFIX . "blog SET content='$post_content' WHERE gid=$postid");
+	$json=json_encode(array("status"=>"ok","msg"=>"转换成功"));
+	echo $json;
+}else if($action=='updateJDTCLinks'){
+	if(!isset($tle_sinaimgbed_set['jdprefix'])){
+		$json=json_encode(array("status"=>"noneconfig","msg"=>"请先配置京东图床前缀"));
+		echo $json;
+		exit;
+	}
+	$postid = isset($_POST['postid']) ? addslashes($_POST['postid']) : '';
+	$blog = $DB -> once_fetch_array("SELECT * FROM `".DB_PREFIX."blog` WHERE `gid` = $postid ");
+	$post_content = $blog["content"];
+	$jdprefix=str_replace("/","\/",$tle_sinaimgbed_set['jdprefix']);
+	$jdprefix=str_replace(".","\.",$jdprefix);
+	preg_match_all( "/<(img|IMG).*?src=[\'|\"](?!".$jdprefix.")(.*?)[\'|\"].*?[\/]?>/", $post_content, $submatches );
+	foreach($submatches[2] as $url){
+		$curl = curl_init();
+		curl_setopt($curl, CURLOPT_URL, 'https://www.tongleer.com/api/web/?action=weiboimg&type=jd&imgurl='.$url);
+		curl_setopt($curl, CURLOPT_HEADER, 1);
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+		$result = curl_exec($curl);
+		if (curl_getinfo($curl, CURLINFO_HTTP_CODE) == '200') {
+			$headerSize = curl_getinfo($curl, CURLINFO_HEADER_SIZE);
+			$header = substr($result, 0, $headerSize);
+			$body = substr($result, $headerSize);
+		}
+		curl_close($curl);
+		$arr=json_decode($body,true);
+		if($arr['code']==0){
+			if(isset($arr['data']["title"])){
+				$imgurl=$tle_sinaimgbed_set['jdprefix'].$arr['data']["title"];
+				$post_content=str_replace($url,$imgurl,$post_content);
+				
+				if(strpos($url,BLOG_URL)!== false){
+					$path=str_replace(BLOG_URL,"",$url);
+					$oldpath=EMLOG_ROOT."/".$path;
+					@unlink($oldpath);
+				}
+			}
+		}
+	}
+	$DB->query("UPDATE " . DB_PREFIX . "blog SET content='$post_content' WHERE gid=$postid");
+	$json=json_encode(array("status"=>"ok","msg"=>"转换成功"));
 	echo $json;
 }
 ?>

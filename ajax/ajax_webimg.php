@@ -116,6 +116,78 @@ if($action=='upload'){
 			}
 			echo $json;
 		}
+	}else if($tle_sinaimgbed_set['albumtype']=="qihu"){
+		$file=$_FILES['file'];
+		if(@$file['size'][0]<=1024*1024*3){
+			$tempfilename = iconv("utf-8", "gbk", @$file['name'][0]);
+			move_uploaded_file(@$file['tmp_name'][0], dirname(__FILE__).'/'.$tempfilename);
+			$ch = curl_init();
+			$filePath = dirname(__FILE__).'/'.$tempfilename;
+			$data = array('file' => "multipart", 'Filedata' => '@' . $filePath);
+			if (class_exists('\CURLFile')) {
+				$data['Filedata'] = new \CURLFile(realpath($filePath));
+			} else {
+				if (defined('CURLOPT_SAFE_UPLOAD')) {
+					curl_setopt($ch, CURLOPT_SAFE_UPLOAD, FALSE);
+				}
+			}
+			curl_setopt($ch, CURLOPT_URL, 'https://api.uomg.com/api/image.360');
+			curl_setopt($ch, CURLOPT_POST, 1);
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			$json=curl_exec($ch);
+			curl_close($ch);
+			@unlink(dirname(__FILE__).'/'.$tempfilename);
+			$arr=json_decode($json,true);
+			if(isset($arr['imgurl'])){
+				$imgurls=explode("/",$arr['imgurl']);
+				$urls=$tle_sinaimgbed_set['qihuprefix'].$imgurls[count($imgurls)-1];
+				$hrefs="<a style='text-decoration:none;' href='".$urls."' target='_blank' title='".$file['name'][0]."'>".$urls."</a>";
+				$codes="<a href='".$urls."' target='_blank' title='".$file['name'][0]."'><img src='".$urls."' alt='".$file['name'][0]."' /></a>";
+				$json=json_encode(array("status"=>"ok","msg"=>"上传结果","urls"=>$urls,"hrefs"=>$hrefs,"codes"=>$codes));
+			}else{
+				$json=json_encode(array("status"=>"fail","msg"=>"上传失败"));
+			}
+			echo $json;
+		}
+	}else if($tle_sinaimgbed_set['albumtype']=="jd"){
+		$file=$_FILES['file'];
+		if(@$file['size'][0]<=1024*1024*3){
+			$tempfilename = iconv("utf-8", "gbk", @$file['name'][0]);
+			move_uploaded_file(@$file['tmp_name'][0], dirname(__FILE__).'/'.$tempfilename);
+			$ch = curl_init();
+			$filePath = dirname(__FILE__).'/'.$tempfilename;
+			$data = array('file' => "multipart", 'Filedata' => '@' . $filePath);
+			if (class_exists('\CURLFile')) {
+				$data['Filedata'] = new \CURLFile(realpath($filePath));
+			} else {
+				if (defined('CURLOPT_SAFE_UPLOAD')) {
+					curl_setopt($ch, CURLOPT_SAFE_UPLOAD, FALSE);
+				}
+			}
+			curl_setopt($ch, CURLOPT_URL, 'https://api.uomg.com/api/image.jd');
+			curl_setopt($ch, CURLOPT_POST, 1);
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			$json=curl_exec($ch);
+			curl_close($ch);
+			@unlink(dirname(__FILE__).'/'.$tempfilename);
+			$arr=json_decode($json,true);
+			if(isset($arr['imgurl'])){
+				$imgurls=explode("/",$arr['imgurl']);
+				if(strpos($imgurls[4],"ERROR")!==false){
+					$urls="上传失败换张图片试试";
+				}else{
+					$urls=$tle_sinaimgbed_set['jdprefix'].substr($arr['imgurl'],strpos($arr['imgurl'],$imgurls[4]));
+				}
+				$hrefs="<a style='text-decoration:none;' href='".$urls."' target='_blank' title='".$file['name'][0]."'>".$urls."</a>";
+				$codes="<a href='".$urls."' target='_blank' title='".$file['name'][0]."'><img src='".$urls."' alt='".$file['name'][0]."' /></a>";
+				$json=json_encode(array("status"=>"ok","msg"=>"上传结果","urls"=>$urls,"hrefs"=>$hrefs,"codes"=>$codes));
+			}else{
+				$json=json_encode(array("status"=>"fail","msg"=>"上传失败"));
+			}
+			echo $json;
+		}
 	}
 }
 ?>
