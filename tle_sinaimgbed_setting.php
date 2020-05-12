@@ -1,6 +1,6 @@
 <?php
 if(!defined('EMLOG_ROOT')){die('error');}
-define('TLESINAIMGBED_VERSION', '7');
+define('TLESINAIMGBED_VERSION', '8');
 if(!empty($_POST)){
 	$DB = Database::getInstance();
 	$albumtype=empty($_POST['albumtype'])?'jd':trim($_POST['albumtype']);
@@ -323,6 +323,7 @@ function plugin_setting_view(){
 				}else{
 					echo '无需转换360';
 				}
+				/*
 				$jdprefix=!empty($tle_sinaimgbed_set['jdprefix'])?$tle_sinaimgbed_set['jdprefix']:"http://p0.so.qhimgs1.com/";
 				$jdprefix=str_replace("/","\/",$jdprefix);
 				$jdprefix=str_replace(".","\.",$jdprefix);
@@ -334,6 +335,7 @@ function plugin_setting_view(){
 				}else{
 					echo '无需转换京东';
 				}
+				*/
 				//图片本地化
 				$blogurl=str_replace("/","\/",BLOG_URL);
 				$blogurl=str_replace(".","\.",$blogurl);

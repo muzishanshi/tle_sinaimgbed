@@ -24,7 +24,7 @@
 		}
 	});
 
-	var jdurl = 'https://api.uomg.com/api/image.jd';
+	var jdurl = 'https://www.tongleer.com/api/web/?action=weiboimg&type=jd';
 	$(document).ready(function() {
 		$("#jdlocalpic").change(function(e) {
 			jdlocalupload(this.files)
@@ -37,8 +37,7 @@
 		for(var j = 0,len = files.length; j < len; j++){
 			console.log(files[j]);
 			let imageData = new FormData();
-			imageData.append("file", 'multipart');
-			imageData.append("Filedata", files[j]);
+			imageData.append("file", files[j]);
 			$.ajax({
 				url: jdurl,
 				type: 'POST',
@@ -50,10 +49,10 @@
 				// 图片上传成功
 				success: function (result) {
 					document.getElementById('jduploadprogress').innerHTML="";
-					if (result.code == 1){
-						if(result.imgurl.indexOf("ERROR")==-1){
-							addToEditor(result.imgurl);
-							$("#jdpreview").append('<p>'+result.imgurl+'</p>');
+					if (result.code == 0){
+						if(result.data.src.indexOf("ERROR")==-1){
+							addToEditor(result.data.src);
+							$("#jdpreview").append('<p>'+result.data.src+'</p>');
 						}else{
 							addToEditor('<p>第'+j+'个图片上传失败，图片不能太小</p>');
 							$("#jdpreview").append('<p>第'+j+'个图片上传失败，图片不能太小</p>');

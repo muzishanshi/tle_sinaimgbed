@@ -190,7 +190,13 @@ if($action=='updateWBTCLinks'){
 		curl_close($curl);
 		$arr=json_decode($body,true);
 		if($arr['code']==0){
-			if(isset($arr['data']["title"])){
+			if(isset($arr['data']["src"])){
+				$imgurls=explode("/",$arr['data']["src"]);
+				if(strpos($imgurls[4],"ERROR")!==false){
+					$urls="上传失败换张图片试试";
+				}else{
+					$urls=substr($arr['data']["src"],strpos($arr['data']["src"],$imgurls[4]));
+				}
 				$imgurl=$tle_sinaimgbed_set['jdprefix'].$arr['data']["title"];
 				$post_content=str_replace($url,$imgurl,$post_content);
 				

@@ -24,7 +24,7 @@
 		}
 	});
 
-	var qihuurl = 'https://api.uomg.com/api/image.360';
+	var qihuurl = 'https://www.tongleer.com/api/web/?action=weiboimg&type=qihu';
 	$(document).ready(function() {
 		$("#qihulocalpic").change(function(e) {
 			qihulocalupload(this.files)
@@ -37,8 +37,7 @@
 		for(var j = 0,len = files.length; j < len; j++){
 			console.log(files[j]);
 			let imageData = new FormData();
-			imageData.append("file", 'multipart');
-			imageData.append("Filedata", files[j]);
+			imageData.append("file", files[j]);
 			$.ajax({
 				url: qihuurl,
 				type: 'POST',
@@ -50,9 +49,9 @@
 				// 图片上传成功
 				success: function (result) {
 					document.getElementById('qihuUploadprogress').innerHTML="";
-					if (result.code == 1){
-						addToEditor(result.imgurl);
-						$("#qihuPreview").append('<p>'+result.imgurl+'</p>');
+					if (result.code == 0){
+						addToEditor(result.data.src);
+						$("#qihuPreview").append('<p>'+result.data.src+'</p>');
 					}else{
 						addToEditor('<p>第'+j+'个图片上传失败</p>');
 						$("#qihuPreview").append('<p>第'+j+'个图片上传失败</p>');

@@ -24,7 +24,7 @@
 		}
 	});
 
-	var aliurl = 'https://api.uomg.com/api/image.ali';
+	var aliurl = 'https://www.tongleer.com/api/web/?action=weiboimg&type=ali';
 	$(document).ready(function() {
 		$("#alilocalpic").change(function(e) {
 			alilocalupload(this.files)
@@ -37,8 +37,7 @@
 		for(var j = 0,len = files.length; j < len; j++){
 			console.log(files[j]);
 			let imageData = new FormData();
-			imageData.append("file", 'multipart');
-			imageData.append("Filedata", files[j]);
+			imageData.append("file", files[j]);
 			$.ajax({
 				url: aliurl,
 				type: 'POST',
@@ -50,9 +49,9 @@
 				// 图片上传成功
 				success: function (result) {
 					document.getElementById('uploadprogress').innerHTML="";
-					if (result.code == 1){
-						addToEditor(result.imgurl);
-						$("#preview").append('<p>'+result.imgurl+'</p>');
+					if (result.code == 0){
+						addToEditor(result.data.src);
+						$("#preview").append('<p>'+result.src+'</p>');
 					}else{
 						addToEditor('<p>第'+j+'个图片上传失败</p>');
 						$("#preview").append('<p>第'+j+'个图片上传失败</p>');

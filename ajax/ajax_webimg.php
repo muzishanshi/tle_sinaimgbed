@@ -88,15 +88,15 @@ if($action=='upload'){
 			move_uploaded_file(@$file['tmp_name'][0], dirname(__FILE__).'/'.$tempfilename);
 			$ch = curl_init();
 			$filePath = dirname(__FILE__).'/'.$tempfilename;
-			$data = array('file' => "multipart", 'Filedata' => '@' . $filePath);
+			$data = array('file' => '@' . $filePath);
 			if (class_exists('\CURLFile')) {
-				$data['Filedata'] = new \CURLFile(realpath($filePath));
+				$data['file'] = new \CURLFile(realpath($filePath));
 			} else {
 				if (defined('CURLOPT_SAFE_UPLOAD')) {
 					curl_setopt($ch, CURLOPT_SAFE_UPLOAD, FALSE);
 				}
 			}
-			curl_setopt($ch, CURLOPT_URL, 'https://api.uomg.com/api/image.ali');
+			curl_setopt($ch, CURLOPT_URL, 'https://www.tongleer.com/api/web/?action=weiboimg&type=ali');
 			curl_setopt($ch, CURLOPT_POST, 1);
 			curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -104,10 +104,10 @@ if($action=='upload'){
 			curl_close($ch);
 			@unlink(dirname(__FILE__).'/'.$tempfilename);
 			$arr=json_decode($json,true);
-			if(isset($arr['data']['fs_url'])){
-				$picname=$arr['data']['fs_url'];
+			if(isset($arr['data']['src'])){
+				$imgurls=explode("/",$arr['data']["src"]);
 				$aliprefix=!empty($tle_sinaimgbed_set['aliprefix'])?$tle_sinaimgbed_set['aliprefix']:"https://ae01.alicdn.com/kf/";
-				$urls=$aliprefix . $picname;
+				$urls=$aliprefix.$imgurls[count($imgurls)-1];
 				$hrefs="<a style='text-decoration:none;' href='".$urls."' target='_blank' title='".$file['name'][0]."'>".$urls."</a>";
 				$codes="<a href='".$urls."' target='_blank' title='".$file['name'][0]."'><img src='".$urls."' alt='".$file['name'][0]."' /></a>";
 				$json=json_encode(array("status"=>"ok","msg"=>"上传结果","urls"=>$urls,"hrefs"=>$hrefs,"codes"=>$codes));
@@ -123,15 +123,15 @@ if($action=='upload'){
 			move_uploaded_file(@$file['tmp_name'][0], dirname(__FILE__).'/'.$tempfilename);
 			$ch = curl_init();
 			$filePath = dirname(__FILE__).'/'.$tempfilename;
-			$data = array('file' => "multipart", 'Filedata' => '@' . $filePath);
+			$data = array('file' => '@' . $filePath);
 			if (class_exists('\CURLFile')) {
-				$data['Filedata'] = new \CURLFile(realpath($filePath));
+				$data['file'] = new \CURLFile(realpath($filePath));
 			} else {
 				if (defined('CURLOPT_SAFE_UPLOAD')) {
 					curl_setopt($ch, CURLOPT_SAFE_UPLOAD, FALSE);
 				}
 			}
-			curl_setopt($ch, CURLOPT_URL, 'https://api.uomg.com/api/image.360');
+			curl_setopt($ch, CURLOPT_URL, 'https://www.tongleer.com/api/web/?action=weiboimg&type=qihu');
 			curl_setopt($ch, CURLOPT_POST, 1);
 			curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -139,8 +139,8 @@ if($action=='upload'){
 			curl_close($ch);
 			@unlink(dirname(__FILE__).'/'.$tempfilename);
 			$arr=json_decode($json,true);
-			if(isset($arr['imgurl'])){
-				$imgurls=explode("/",$arr['imgurl']);
+			if(isset($arr['data']["src"])){
+				$imgurls=explode("/",$arr['data']["src"]);
 				$urls=$tle_sinaimgbed_set['qihuprefix'].$imgurls[count($imgurls)-1];
 				$hrefs="<a style='text-decoration:none;' href='".$urls."' target='_blank' title='".$file['name'][0]."'>".$urls."</a>";
 				$codes="<a href='".$urls."' target='_blank' title='".$file['name'][0]."'><img src='".$urls."' alt='".$file['name'][0]."' /></a>";
@@ -157,15 +157,15 @@ if($action=='upload'){
 			move_uploaded_file(@$file['tmp_name'][0], dirname(__FILE__).'/'.$tempfilename);
 			$ch = curl_init();
 			$filePath = dirname(__FILE__).'/'.$tempfilename;
-			$data = array('file' => "multipart", 'Filedata' => '@' . $filePath);
+			$data = array('file' => '@' . $filePath);
 			if (class_exists('\CURLFile')) {
-				$data['Filedata'] = new \CURLFile(realpath($filePath));
+				$data['file'] = new \CURLFile(realpath($filePath));
 			} else {
 				if (defined('CURLOPT_SAFE_UPLOAD')) {
 					curl_setopt($ch, CURLOPT_SAFE_UPLOAD, FALSE);
 				}
 			}
-			curl_setopt($ch, CURLOPT_URL, 'https://api.uomg.com/api/image.jd');
+			curl_setopt($ch, CURLOPT_URL, 'https://www.tongleer.com/api/web/?action=weiboimg&type=jd');
 			curl_setopt($ch, CURLOPT_POST, 1);
 			curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -173,12 +173,12 @@ if($action=='upload'){
 			curl_close($ch);
 			@unlink(dirname(__FILE__).'/'.$tempfilename);
 			$arr=json_decode($json,true);
-			if(isset($arr['imgurl'])){
-				$imgurls=explode("/",$arr['imgurl']);
+			if(isset($arr['data']["src"])){
+				$imgurls=explode("/",$arr['data']["src"]);
 				if(strpos($imgurls[4],"ERROR")!==false){
 					$urls="上传失败换张图片试试";
 				}else{
-					$urls=$tle_sinaimgbed_set['jdprefix'].substr($arr['imgurl'],strpos($arr['imgurl'],$imgurls[4]));
+					$urls=$tle_sinaimgbed_set['jdprefix'].substr($arr['data']["src"],strpos($arr['data']["src"],$imgurls[4]));
 				}
 				$hrefs="<a style='text-decoration:none;' href='".$urls."' target='_blank' title='".$file['name'][0]."'>".$urls."</a>";
 				$codes="<a href='".$urls."' target='_blank' title='".$file['name'][0]."'><img src='".$urls."' alt='".$file['name'][0]."' /></a>";
