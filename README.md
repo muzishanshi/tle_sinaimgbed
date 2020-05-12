@@ -13,6 +13,10 @@
 Github：https://github.com/muzishanshi/TleSinaimgbed
 
 # 版本记录
+2020-05-12 V1.0.8
+
+	更新图床接口
+
 2020-04-14 V1.0.7
 
 	新增markdownEditor插件支持
