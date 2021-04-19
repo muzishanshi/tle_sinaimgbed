@@ -70,7 +70,11 @@ function plugin_setting_view(){
 			<input type="radio" name="issavealbum" value="n" <?=isset($tle_sinaimgbed_set['issavealbum'])?($tle_sinaimgbed_set['issavealbum']=="n"?"checked":""):"checked";?> />否
 			-->
 			<input type="radio" name="issavealbum" value="y" checked />是<br />
-			<small>（因微博官方限制，故只能选择“是”并开启配置好<a href="http://www.emlog.net/plugin/310" target="_blank"><font color='blue'>新浪微博同步插件</font>配合使用</a>）</small>
+			<small>
+				（因微博官方限制，故只能选择“是”并开启配置好<a href="http://www.emlog.net/plugin/310" target="_blank"><font color='blue'>新浪微博同步插件</font>配合使用</a>）
+				<br />
+				不过此插件只推荐配合微博同步插件使用微博图床进行上传，其他图床能用就用，不能就不用，若想用其他图床，则请前往https://image.kieng.cn/或https://pic.onji.cn/进行上传
+			</small>
 		</p>
 		<p>
 			<input type="hidden" style="margin:5px auto;" class="layui-input" name="weibouser" value="<?php echo $tle_sinaimgbed_set['weibouser']; ?>" placeholder="微博小号账号" />

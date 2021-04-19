@@ -2,7 +2,7 @@
 /*
 Plugin Name: 阿里新浪微博图床
 Version: 1.0.8
-Description: 这是一款简单的Emlog微博图床插件，可把图片上传到阿里新浪微博存储，支持远程和本地链接互相转换、自定义图床链接前缀，可上传到自己的微博相册、京东图床、360图床。
+Description: 这是一款简单的Emlog微博图床插件，可把图片上传到阿里新浪微博存储，支持远程和本地链接互相转换、自定义图床链接前缀，可上传到自己的微博相册、京东图床、360图床，不过此插件只推荐配合微博同步插件使用微博图床进行上传，其他图床能用就用，不能就不用，若想用其他图床，则请前往https://image.kieng.cn/或https://pic.onji.cn/进行上传。
 Plugin URL: https://www.tongleer.com/1696.html
 ForEmlog: 5.3.1
 Author: 二呆
